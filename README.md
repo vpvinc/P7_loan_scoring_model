@@ -1,4 +1,4 @@
-# Dashboard for interpreting credit granting predictions with SHAP
+# Dashboard for interpreting credit granting predictions: structure, model, customized metrics and interpretability
 
 This project aims at deploying a dashboard to consult predictions for the granting of the credit (default or not) of about 300k clients.
 The dataset comes from the Kaggle competition.
@@ -45,25 +45,75 @@ A cross-validated GridSearch was applied for these two model with the following 
   - SMOTE(sampling_strategy=0.8)
   - RandomUnderSampler(sampling_strategy='majority')  
 - feature_selection: 
-  - RFE(estimator=DecisionTreeClassifier()
-  - n_features_to_select=50), SelectKBest(k=50)
+  - RFE(estimator=DecisionTreeClassifier(), n_features_to_select=50)
+  - SelectKBest(k=50)
 
 The grid of parameters for each step is available in the notebook P7_modelling
 ### b. Best pipe
 Given that the target class is unbalanced (default 9% VS non-default 91%), AUC is preferred over accuracy. The following 
 pipeline achieved the best score of 0.74:
-``best_pipe = im_pipeline(steps=[
-      ('imputer', SimpleImputer(strategy='median'))
-    , ('scaler', RobustScaler())
-    , ('weight_strat', RandomUnderSampler(sampling_strategy='majority', random_state=seed))
-    , ('feat_selec', SelectKBest(k=50))
-    , ('LBMC', LGBMClassifier(colsample_bytree=0.8, max_depth=7, min_split_gain=0,
+- imputer: SimpleImputer(strategy='median')
+- resampling: RandomUnderSampler(sampling_strategy='majority')  
+- feature_selection: SelectKBest(k=50)
+- model: LGBMClassifier(colsample_bytree=0.8, max_depth=7, min_split_gain=0,
                 n_estimators=40, num_leaves=10, objective='binary',
-                random_state=seed, reg_alpha=0.1, reg_lambda=0, subsample=1))    
-]
-    , verbose=True)``
+                random_state=seed, reg_alpha=0.1, reg_lambda=0, subsample=1)
 
+<p align="center">
+  <img width="500" src="https://github.com/vpvinc/P7_loan_scoring_model/blob/assets/model_comparison.PNG?raw=true" />
+</p>
 
 ## 3. customized cost function and optimization
+Using AUC, we determined the best model to maximise both recall and specificity regardless of the probability threshold. 
+However, we now want to determine the best threshold in order to minimize the rate of false negatives which represent
+the worst error for the bank. To achieve this optimization, we will choose the threshold that maximize the following
+score:    
+`score = (tp - 100*fn- fp + tn)/(tp + 100*fn + fp + tn)`  
+False negatives are penalized a 100 times more than false positive. This factor is an arbitrary choice and should be 
+given by the bank.
+By plotting the default probability threshold VS this score. We can visually identify the threshold that maximize the 
+score.
+<p align="center">
+  <img width="811" src="https://github.com/vpvinc/P7_loan_scoring_model/blob/assets/scoreVSthr.png?raw=true" />
+</p>
+
+A threshold of 30% maximizes the score, which corresponds to a fn rate of 10% and a fp rate of 65%
 
 ## 4. Interpretability of the model using SHAP
+
+See this [repo](https://github.com/slundberg/shap/tree/master) by slundberg for more information on SHAP
+
+As stated by slundberg:
+> SHAP (SHapley Additive exPlanations) is a game theoretic approach to explain the output of any machine learning model. 
+It connects optimal credit allocation with local explanations using the classic Shapley values from game theory and 
+their related extensions.
+
+In simple terms, it's a set of tools that helps interpret and measure the individual effects of features to the output 
+of a black-box model. 
+One of the most commonly used plot to interpret a single prediction is the waterfall. Here below is a waterfall plot for
+a prediction of credit granting:
+
+<p align="center">
+  <img width="511" src="https://github.com/vpvinc/P7_loan_scoring_model/blob/assets/waterfall_ex.PNG?raw=true" />
+</p>
+
+The above explanation shows features each contributing to push the model output from the base value (the average model 
+output over the training dataset we passed) to the model output. The base value above is 0.002 (the average default 
+probability) Features pushing the prediction higher are shown in red, those pushing the prediction lower are in blue.  
+
+Another way to visualize the same explanation is to use a force plot. Here below is an example for the same prediction 
+as above:
+
+<p align="center">
+  <img width="511" src="https://github.com/vpvinc/P7_loan_scoring_model/blob/assets/forceplot_ex.PNG?raw=true" />
+</p>
+
+To get an overview of which features are most important for a model we can plot the SHAP values of every feature for 
+every sample. The plot below sorts features by the sum of SHAP value magnitudes over all samples, and uses SHAP values 
+to show the distribution of the impacts each feature has on the model output. The color represents the feature value 
+(red high, blue low). This reveals for example that a low EXT_SOURCE_2_EXT_SOURCE_3 value increases the default 
+probability.
+
+<p align="center">
+  <img width="511" src="https://github.com/vpvinc/P7_loan_scoring_model/blob/assets/summaryplot_ex.PNG?raw=true" />
+</p>
