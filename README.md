@@ -1,12 +1,9 @@
 # Dashboard for interpreting credit granting predictions with SHAP
 
----
----
 This project aims at deploying a dashboard to consult predictions for the granting of the credit (default or not) of about 300k clients.
 The dataset comes from the Kaggle competition.
 ## Table of content
 
----
 1. Structure of the projet
 2. Selection and training of the model
 3. customized cost function and optimization
@@ -14,8 +11,8 @@ The dataset comes from the Kaggle competition.
 
 ## 1. Structure of the projet
 
----
 **This project articulates around 12 files:**
+
 - P7_EDA: notebook for EDA (adapted from [Will Koehrsen](https://www.kaggle.com/willkoehrsen/start-here-a-gentle-introduction) 's work)
 - P7_modelling: notebook containing:
   - preprocessing steps 
@@ -37,8 +34,7 @@ pickled together and use in main.py. The file is not available on Github due to 
 - requirements.txt: file to set up dependencies with pip
 
 ## 2. Selection and training of the model
-
----
+### a. GridSearchCV
 Two high performing classifiers were considered here: Random Forest Classifier (RFC) and Light GBM (LGBM).
 A cross-validated GridSearch was applied for these two model with the following grid for preprocessing steps:  
 - imputer: 
@@ -53,13 +49,21 @@ A cross-validated GridSearch was applied for these two model with the following 
   - n_features_to_select=50), SelectKBest(k=50)
 
 The grid of parameters for each step is available in the notebook P7_modelling
+### b. Best pipe
+Given that the target class is unbalanced (default 9% VS non-default 91%), AUC is preferred over accuracy. The following 
+pipeline achieved the best score of 0.74:
+``best_pipe = im_pipeline(steps=[
+      ('imputer', SimpleImputer(strategy='median'))
+    , ('scaler', RobustScaler())
+    , ('weight_strat', RandomUnderSampler(sampling_strategy='majority', random_state=seed))
+    , ('feat_selec', SelectKBest(k=50))
+    , ('LBMC', LGBMClassifier(colsample_bytree=0.8, max_depth=7, min_split_gain=0,
+                n_estimators=40, num_leaves=10, objective='binary',
+                random_state=seed, reg_alpha=0.1, reg_lambda=0, subsample=1))    
+]
+    , verbose=True)``
+
 
 ## 3. customized cost function and optimization
 
----
-
-
 ## 4. Interpretability of the model using SHAP
-
----
-
