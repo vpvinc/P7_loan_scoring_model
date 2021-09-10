@@ -5,9 +5,10 @@ The dataset comes from the Kaggle competition.
 ## Table of content
 
 1. Structure of the projet
-2. Selection and training of the model
-3. customized cost function and optimization
-4. Interpretability of the model using SHAP
+2. 
+3. Selection and training of the model
+4. customized cost function and optimization
+5. Interpretability of the model using SHAP
 
 ## 1. Structure of the projet
 
@@ -33,7 +34,20 @@ pickled together and use in main.py. The file is not available on Github due to 
 - environment.yml: file to set up dependencies with conda
 - requirements.txt: file to set up dependencies with pip
 
-## 2. Selection and training of the model
+## 2. Unbalanced data and modelling strategy
+Only 9% of clients made default on their credit versus 91% of clients that did not.
+
+<p align="center">
+  <img width="500" src="https://github.com/vpvinc/P7_loan_scoring_model/blob/assets/reaprt_classes.PNG?raw=true" />
+</p>
+
+Such an disproportion in training data will bias the model to ignore the instances of the minority class. To avoid this
+bias, we will consider two resampling methods that will make the proportions of classes close to 50%.
+- **Synthetic Minority Oversampling Technique (SMOTE):** this method will populate the dataset with new instances very 
+similar to the ones of the minority class.
+- **Random Under Sampling (RUS):** this method randomly delete instances of the majority class
+
+## 3. Selection and training of the model
 ### a. GridSearchCV
 Two high performing classifiers were considered here: Random Forest Classifier (RFC) and Light GBM (LGBM).
 A cross-validated GridSearch was applied for these two model with the following grid for preprocessing steps:  
@@ -63,7 +77,7 @@ pipeline achieved the best score of 0.74:
   <img width="500" src="https://github.com/vpvinc/P7_loan_scoring_model/blob/assets/model_comparison.PNG?raw=true" />
 </p>
 
-## 3. customized cost function and optimization
+## 4. Customized cost function and optimization
 Using AUC, we determined the best model to maximise both recall and specificity regardless of the probability threshold. 
 However, we now want to determine the best threshold in order to minimize the rate of false negatives which represent
 the worst error for the bank. To achieve this optimization, we will choose the threshold that maximize the following
@@ -79,7 +93,7 @@ score.
 
 A threshold of 30% maximizes the score, which corresponds to a fn rate of 10% and a fp rate of 65%
 
-## 4. Interpretability of the model using SHAP
+## 5. Interpretability of the model using SHAP
 
 See this [repo](https://github.com/slundberg/shap/tree/master) by slundberg for more information on SHAP
 
