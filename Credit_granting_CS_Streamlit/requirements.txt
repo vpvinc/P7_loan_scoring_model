@@ -1,5 +1,6 @@
 dill==0.3.4
 seaborn==0.11.2
+lightgbm==3.2.1
 shap==0.39.0
 requests==2.25.1
 streamlit==0.84.1
