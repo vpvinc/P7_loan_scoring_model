@@ -7,7 +7,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
 import shap
-import dill
+import cloudpickle as cp
+from urllib.request import urlopen
 import streamlit as st
 import streamlit.components.v1 as components
 from sklearn.model_selection import train_test_split
@@ -35,29 +36,28 @@ def load_prep_train_data():
 
 def load_num_cat_cols():
     """returns tuple (num_cols, cat_cols)"""
-    with open(
+    with urlopen(
             # "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/Credit_granting_CS_Streamlit/data/num_cat_cols.pkl",
-            "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/Credit_granting_CS_Streamlit/data/num_cat_cols.pkl?raw=true",
-            "rb") as file:
-        return dill.load(file)
+            "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/Credit_granting_CS_Streamlit/data/num_cat_cols.pkl?raw=true"
+            ) as file:
+        return cp.load(file)
 
 def load_explainer_shapvs():
     """returns tuple (fitted explainer, shap values)"""
-    with open(
+    with urlopen(
             # "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/Credit_granting_CS_Streamlit/data/explainer_shapvs.pkl",
-            "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/Credit_granting_CS_Streamlit/data/explainer_shapvs.pkl?raw=true",
-            "rb") as file:
-        return dill.load(file)
+            "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/Credit_granting_CS_Streamlit/data/explainer_shapvs.pkl?raw=true"
+            ) as file:
+        return cp.load(file)
 
 
 def load_pipe():
     """returns fitted pipe"""
-    with open(
+    with urlopen(
             # "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/Credit_granting_CS_Streamlit/data/pipe.pkl",
-            "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/Credit_granting_CS_Streamlit/data/pipe.pkl?raw=true",
-            "rb") as file:
-        best_pipe = dill.load(file)
-    return best_pipe
+            "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/Credit_granting_CS_Streamlit/data/pipe.pkl?raw=true"
+            ) as file:
+        return cp.load(file)
 
 # functions for predictions
 

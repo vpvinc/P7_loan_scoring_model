@@ -13,3 +13,4 @@ scikit_learn==0.24.2
 sentence_transformers==2.0.0
 spacy==3.1.2
 uvicorn==0.15.0
+cloudpickle==1.6.0
