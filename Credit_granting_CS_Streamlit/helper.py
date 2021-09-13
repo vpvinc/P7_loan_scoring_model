@@ -21,7 +21,8 @@ seed=42
 def load_raw_application_train_data():
     """returns train dataset"""
     return pd.read_csv(
-        "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/train.csv").iloc[:, 1:]  # skip Unamed column
+        # "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/train.csv").iloc[:, 1:]  # skip Unamed column
+        "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/train.csv?raw=true").iloc[:, 1:]
 
 @st.cache
 def load_prep_train_data():
@@ -29,29 +30,32 @@ def load_prep_train_data():
     IDs, not just the ones undersampled to display SHAP plots. Same logic as for the computation of Shap values for
     all IDs"""
     return pd.read_csv(
-        "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/prep_train.csv").iloc[:, 1:]  # skip Unamed
+        # "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/prep_train.csv").iloc[:, 1:]  # skip Unamed
+        "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/prep_train.csv?raw=true").iloc[:, 1:]
 
 def load_num_cat_cols():
     """returns tuple (num_cols, cat_cols)"""
     with open(
-            "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/Credit_granting_CS_Streamlit/data/"
-            "num_cat_cols.pkl",
+            # "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/Credit_granting_CS_Streamlit/data/num_cat_cols.pkl",
+            "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/Credit_granting_CS_Streamlit/data/num_cat_cols.pkl?raw=true",
             "rb") as file:
         return dill.load(file)
 
 def load_explainer_shapvs():
     """returns tuple (fitted explainer, shap values)"""
     with open(
-            "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/Credit_granting_CS_Streamlit/data/"
-            "explainer_shapvs.pkl",
+            # "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/Credit_granting_CS_Streamlit/data/explainer_shapvs.pkl",
+            "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/Credit_granting_CS_Streamlit/data/explainer_shapvs.pkl?raw=true",
             "rb") as file:
         return dill.load(file)
 
 
 def load_pipe():
     """returns fitted pipe"""
-    with open("C:/Users/VP/Google Drive/Education/OC/working_directory/P7/Credit_granting_CS_Streamlit/data/pipe.pkl",
-              "rb") as file:
+    with open(
+            # "C:/Users/VP/Google Drive/Education/OC/working_directory/P7/Credit_granting_CS_Streamlit/data/pipe.pkl",
+            "https://github.com/vpvinc/P7_loan_scoring_model/blob/main/Credit_granting_CS_Streamlit/data/pipe.pkl?raw=true",
+            "rb") as file:
         best_pipe = dill.load(file)
     return best_pipe
 
