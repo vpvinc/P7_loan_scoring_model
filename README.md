@@ -8,7 +8,7 @@ link to the app: https://share.streamlit.io/vpvinc/p7_loan_scoring_model/main/Cr
 ## Table of content
 
 1. Structure of the projet
-2. 
+2. Unbalanced data and modelling strategy
 3. Selection and training of the model
 4. customized cost function and optimization
 5. Interpretability of the model using SHAP
