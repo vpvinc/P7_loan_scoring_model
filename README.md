@@ -2,6 +2,9 @@
 
 This project aims at deploying a dashboard to consult predictions for the granting of the credit (default or not) of about 300k clients.
 The dataset comes from the Kaggle competition.
+
+link to the app: https://share.streamlit.io/vpvinc/p7_loan_scoring_model/main/Credit_granting_CS_Streamlit/main.py
+
 ## Table of content
 
 1. Structure of the projet
