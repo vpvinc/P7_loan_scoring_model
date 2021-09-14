@@ -1,7 +1,7 @@
 # Dashboard for interpreting credit granting predictions: structure, model, customized metrics and interpretability
 
-This project aims at deploying a dashboard to consult predictions for the granting of the credit (default or not) of about 300k clients.
-The dataset comes from the Kaggle competition.
+This project aims at deploying a dashboard to consult and interpret predictions for the granting of the credit (default or not) of about 300k clients.
+The dataset comes from this Kaggle [competition](https://www.kaggle.com/c/home-credit-default-risk).
 
 link to the app: https://share.streamlit.io/vpvinc/p7_loan_scoring_model/main/Credit_granting_CS_Streamlit/main.py
 
