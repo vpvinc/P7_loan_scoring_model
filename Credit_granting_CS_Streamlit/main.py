@@ -39,7 +39,7 @@ with st.spinner('Loading data and prediction model...'):
 # Collecting client id to assess in sidebar
 
 with st.sidebar.form(key='my_form'):
-    client_id = st.text_input(label='Enter client SK_ID_CURR to assess')
+    client_id = st.text_input(label='Enter client SK_ID_CURR to assess (EX: 203217, 389007)')
     submit_button = st.form_submit_button(label='Submit')
 
 # command to keep state of the buttons saved. Necessary to prevent streamlit from refreshing between two buttons hit

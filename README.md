@@ -24,11 +24,11 @@ The dataset comes from the Kaggle competition.
 - main.py: application file to be run with streamlit. The user must type in an ID. The prediction (default/not default) 
 and the default probability are then displayed along with SHAP plots (waterfall, force-plot, summary plot)
 - helper.py: package containing functions used in main.py
-- prep_train.csv: dataset preprocessed. This file is not on the repo as per Kaggle policy
-- train.csv: dataset unprocessed (only imputation by median and mode). This file is not on the repo as per Kaggle policy
+- prep_train.csv: dataset preprocessed. Only a sample is available to run the prototype app
+- train.csv: dataset unprocessed (only imputation by median and mode). Only a sample is available to run the prototype app
 - folder "data":
   - explainer_shapvs.pkl: tree_explainer fitted with best model and shap values computed for the whole dataset. Both are 
-pickled together and use in main.py. The file is not available on Github due to size constraints
+pickled together and use in main.py. Only a sample is available to run the prototype app
   - pipe.pkl: best pipe pickled used in main.py
   - num_cat_cols: pkl file containing lists used to display the last graph in the dashboard
 - environment.yml: file to set up dependencies with conda
