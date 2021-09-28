@@ -12,6 +12,7 @@ link to the app: https://share.streamlit.io/vpvinc/p7_loan_scoring_model/main/Cr
 3. Selection and training of the model
 4. customized cost function and optimization
 5. Interpretability of the model using SHAP
+6. Limits and perspectives
 
 ## 1. Structure of the projet
 
@@ -134,3 +135,22 @@ probability.
 <p align="center">
   <img width="511" src="https://github.com/vpvinc/P7_loan_scoring_model/blob/assets/summaryplot_ex.PNG?raw=true" />
 </p>
+
+## 6. Limits and perspectives
+
+### a. input from bank
+
+The penalty factor of 100 applied to false negatives was arbitrary chosen. It would have been more relevant that the client bank
+decided how to impact false negative and false positives respectively, as it impacts directly the value of the optimized
+threshold. An even better solution would have been to obtain the costs and benefits associated with the refund of a loan and
+the default of a loan. With this information, we could have optimized the threshold with respect to the profit of the client bank.
+
+### b. input from customer service
+
+The dashboard was designed without interaction with the final users. There is little doubt that their feedback would have helped
+design a dashboard better suited to their needs.
+
+### c. other resampling techniques
+
+There are other resampling techniques in the library imbalanced-learn. Perhaps some of them would achieve a better
+AUC in combination with LGBM or RFC.
